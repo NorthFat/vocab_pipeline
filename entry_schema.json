@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "VocabEntry",
+  "description": "中考词汇手册单词条目的规范结构（视觉抽取输出格式）",
+  "type": "object",
+  "required": ["word", "part_of_speech", "meanings", "source_page", "confidence"],
+  "properties": {
+    "word": {"type": "string", "description": "词条，保留原形（如 a/an, according to, air conditioner）"},
+    "phonetic": {"type": "string", "description": "IPA 音标，如 /ədˈvaɪs/；无则留空并置 needs_review=true"},
+    "part_of_speech": {"type": "string", "description": "词性，如 n. / v. / adj. / prep.；多词性用 / 分隔"},
+    "meanings": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "word_forms": {"type": "array", "items": {"type": "string"}, "description": "词形变化，如 abilities（复数）"},
+    "core_usages": {
+      "type": "array",
+      "description": "核心搭配/考点；只录原书列出的，不得编造",
+      "items": {
+        "type": "object",
+        "required": ["pattern"],
+        "properties": {
+          "pattern": {"type": "string"},
+          "meaning": {"type": "string"}
+        }
+      }
+    },
+    "related_words": {"type": "array", "items": {"type": "string"}, "description": "同根词/派生词/反义词"},
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["en"],
+        "properties": {
+          "en": {"type": "string"},
+          "cn": {"type": "string", "description": "中文译文；原书无译文时按原意补译"}
+        }
+      }
+    },
+    "exam_tags": {"type": "array", "items": {"type": "string"}},
+    "common_errors": {"type": "array", "items": {"type": "string"}},
+    "source_page": {"type": "integer", "description": "书内页码（页脚数字）"},
+    "source_batch": {"type": "string", "description": "如 zhongkao_vocab_p011-p020.pdf"},
+    "confidence": {"type": "string", "enum": ["high", "medium", "low"]},
+    "needs_review": {"type": "boolean"},
+    "partial": {"type": "boolean", "description": "该词在本批末尾未写完"},
+    "needs_merge_next_page": {"type": "boolean"},
+    "source_page_start": {"type": ["integer", "null"]},
+    "source_page_end": {"type": ["integer", "null"]}
+  }
+}
